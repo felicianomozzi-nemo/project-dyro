@@ -1,1 +1,6 @@
 pylint
+streamlit
+faiss-cpu
+sentence-transformers
+pypdf
+ollama

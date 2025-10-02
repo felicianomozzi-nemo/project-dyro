@@ -4,7 +4,7 @@ ignore=venv,__pycache__
 # Number of processes to use (1 = sequential)
 jobs=1
 # Python version in use (important for syntax and typing rules)
-py-version=3.11
+py-version=3.13
 # Save linting results between runs
 persistent=no
 # Provide suggestions for improvements
@@ -23,8 +23,6 @@ disable=
     E1136, # unsubscriptable-object (query.get(), relationships)
     E1137, # unsupported-assignment-operation (atributos dinámicos de modelo)
     E1138, # unsupported-membership-test (ej: if x in model_instance)
-    W0611, # unused-import (ej: db, Base, usados solo por side-effects)
-    W0613, # unused-argument (handlers y signals reciben args que no usás)
     W0221, # arguments-differ (override de métodos como __init__ en modelos)
 
 # Confidence levels of issues to be reported
