@@ -48,4 +48,3 @@ if query:
     st.markdown("### 📂 Referenced Documents:")
     for r in refs:
         st.write(f"- {r}")
-
