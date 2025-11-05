@@ -1,9 +1,10 @@
 """
-Módulo de ingestión de documentos PDF.
+PDF document ingestion module.
 
-Este script recorre la carpeta 'docs/', extrae texto de los archivos PDF,
-genera embeddings con SentenceTransformers y construye un índice semántico
-utilizando FAISS. El resultado se guarda en 'store.pkl' para ser usado en app.py.
+This script recursively scans the 'docs/' folder, extracts text from PDF files,
+generates embeddings using SentenceTransformers, and builds a semantic index
+with FAISS. The resulting index and metadata are saved to 'store.pkl' for use
+in the Streamlit application (app.py).
 """
 
 import os
@@ -12,22 +13,22 @@ from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 import faiss
 
-# Inicializar modelo de embeddings
+# Initialize the embedding model
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
-# Listas para almacenar documentos y sus rutas
+# Lists to store extracted documents and their corresponding file paths
 documents = []
 paths = []
 
 def extract_text_from_pdf(pdf_path):
     """
-    Extrae todo el texto de un archivo PDF.
+    Extracts all text from a given PDF file.
 
     Args:
-        pdf_path (str): Ruta al archivo PDF.
+        pdf_path (str): Path to the PDF file.
 
     Returns:
-        str: Texto extraído del PDF.
+        str: Extracted text content from the PDF.
     """
     reader = PdfReader(pdf_path)
     text_aux = ""
@@ -35,7 +36,7 @@ def extract_text_from_pdf(pdf_path):
         text_aux += page.extract_text() or ""
     return text_aux
 
-# Recorrer recursivamente la carpeta 'docs/' y procesar archivos PDF
+# Recursively walk through the 'docs/' directory and process PDF files
 for root, _, files in os.walk("docs"):
     for file in files:
         if file.endswith(".pdf"):
@@ -45,16 +46,16 @@ for root, _, files in os.walk("docs"):
                 documents.append(text)
                 paths.append(path)
 
-# Generar embeddings para los documentos
+# Generate embeddings for all extracted documents
 embeddings = embedder.encode(documents)
 
-# Construir índice FAISS con distancia L2
+# Build FAISS index using L2 distance
 dimension = embeddings.shape[1]
 index = faiss.IndexFlatL2(dimension)
 index.add(embeddings)
 
-# Guardar documentos, rutas e índice para uso posterior en app.py
+# Save documents, paths, and index for later use in app.py
 with open("store.pkl", "wb") as f:
     pickle.dump((documents, paths, index), f)
 
-print(f"Ingestados {len(documents)} documentos en el índice.")
+print(f"Ingested {len(documents)} documents into the index.")
