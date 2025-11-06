@@ -1,39 +1,39 @@
 # 🤖 Dyro
 
-Este proyecto es un prototipo de **asistente conversacional** que permite consultar documentación interna en lenguaje natural.
-El asistente utiliza un pipeline de **RAG (Retrieval-Augmented Generation)** con embeddings, búsqueda semántica y un modelo de lenguaje.
+This project is a prototype of a **conversational assistant** that allows users to query internal documentation using natural language.
+The assistant uses a **RAG (Retrieval-Augmented Generation)** pipeline with embeddings, semantic search, and a language model.
 
 ---
 
-## 📂 Estructura del proyecto
+## 📂 Project Structure
 
 ```
 project/
 │
-├── docs/                # Carpeta con PDFs organizados por categorías
-│   └── Productos/
-│       └── Hoteles/
+├── docs/                # Folder containing PDFs organized by category
+│   └── Products/
+│       └── Hotels/
 │           ├── hotel1.pdf
 │           └── hotel2.pdf
 │
-├── ingest.py            # Script que procesa PDFs y construye el índice
-├── app.py               # Interfaz web en Streamlit para interactuar con el asistente
-├── requirements.txt     # Dependencias del proyecto
-└── .pylintrc            # Configuración de Pylint para control de calidad
+├── ingest.py            # Script that processes PDFs and builds the index
+├── app.py               # Streamlit web interface for interacting with the assistant
+├── requirements.txt     # Project dependencies
+└── .pylintrc            # Pylint configuration for code quality checks
 ```
 
 ---
 
-## ⚙️ Instalación
+## ⚙️ Installation
 
-1. **Clonar el repositorio**
+1. **Clone the repository**
 
    ```bash
-   git clone <URL_DEL_REPO>
+   git clone <REPO_URL>
    cd project
    ```
 
-2. **Crear y activar un entorno virtual**
+2. **Create and activate a virtual environment**
 
    ```bash
    python -m venv venv
@@ -41,59 +41,59 @@ project/
    venv\Scripts\activate      # Windows
    ```
 
-3. **Instalar dependencias**
+3. **Install dependencies**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Instalar Ollama** (para usar el modelo de lenguaje local)
+4. **Install Ollama** (to run a local language model)
 
-   * [Descargar Ollama](https://ollama.ai/)
-   * Una vez instalado, asegurarse de tener disponible un modelo, por ejemplo:
+   * [Download Ollama](https://ollama.ai/)
+   * Once installed, make sure you have a model available, for example:
 
-     ```
+     ```bash
      ollama run llama3
      ```
 
 ---
 
-## 🚀 Uso
+## 🚀 Usage
 
-1. **Preparar los documentos**
-   Colocar los PDFs en la carpeta `docs/` siguiendo la estructura de carpetas que quieras reflejar.
+1. **Prepare your documents**
+   Place your PDFs inside the `docs/` folder, following the folder structure you want to reflect.
 
-2. **Ingestar los documentos y construir el índice**
+2. **Ingest the documents and build the index**
 
    ```bash
    python ingest.py
    ```
 
-   Esto genera el archivo `store.pkl` con los textos y el índice semántico.
+   This will create a `store.pkl` file containing the extracted text and the semantic index.
 
-3. **Ejecutar la aplicación web**
+3. **Run the web application**
 
    ```bash
    streamlit run app.py
    ```
 
-4. **Abrir el navegador**
-   La interfaz se mostrará en [http://localhost:8501](http://localhost:8501).
+4. **Open your browser**
+   The interface will be available at [http://localhost:8501](http://localhost:8501).
 
 ---
 
-## 🧰 Tecnologías utilizadas
+## 🧰 Technologies Used
 
-* [Streamlit](https://streamlit.io/) → interfaz web rápida y simple.
-* [Sentence Transformers](https://www.sbert.net/) → generación de embeddings.
-* [FAISS](https://faiss.ai/) → búsqueda semántica.
-* [Ollama](https://ollama.ai/) → ejecución local de modelos de lenguaje (ej. Llama 3).
-* [PyPDF](https://pypi.org/project/pypdf/) → extracción de texto desde PDFs.
+* [Streamlit](https://streamlit.io/) → fast and simple web interface.
+* [Sentence Transformers](https://www.sbert.net/) → embedding generation.
+* [FAISS](https://faiss.ai/) → semantic search.
+* [Ollama](https://ollama.ai/) → local execution of language models (e.g., Llama 3).
+* [PyPDF](https://pypi.org/project/pypdf/) → text extraction from PDF files.
 
 ---
 
-## 📝 Notas
+## 📝 Notes
 
-* El proyecto está configurado con **Pylint** (`.pylintrc`) para mantener un estilo de código consistente.
-* Este prototipo no incluye autenticación ni control de acceso: no usar en producción sin medidas adicionales.
-* La precisión de las respuestas depende de la calidad de los documentos y del modelo de lenguaje.
+* The project is configured with **Pylint** (`.pylintrc`) to maintain a consistent coding style.
+* This prototype does not include authentication or access control — do not use it in production without additional security measures.
+* The accuracy of responses depends on the quality of the documents and the language model used.

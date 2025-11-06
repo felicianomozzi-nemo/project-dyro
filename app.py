@@ -28,7 +28,7 @@ query = st.text_input("Enter your question about the documentation:")
 if query:
     # Generate embedding for the user query
     query_vec = embedder.encode([query])
-    _, I = index.search(query_vec, k=2)  # Retrieve the 2 most relevant documents
+    _, I = index.search(query_vec, k=4)  # Retrieve the 4 most relevant documents
 
     # Build the context from retrieved documents
     CONTEXT = "\n".join([documents[i] for i in I[0]])

@@ -41,10 +41,15 @@ for root, _, files in os.walk("docs"):
     for file in files:
         if file.endswith(".pdf"):
             path = os.path.join(root, file)
-            text = extract_text_from_pdf(path)
-            if text.strip():
-                documents.append(text)
-                paths.append(path)
+            try:
+                text = extract_text_from_pdf(path)
+                if text.strip():
+                    documents.append(text)
+                    paths.append(path)
+            except FileNotFoundError:
+                print(f"⚠️ File not found, skipping: {path}")
+            except Exception as e:
+                print(f"⚠️ Error reading {path}: {e}")
 
 # Generate embeddings for all extracted documents
 embeddings = embedder.encode(documents)
