@@ -10,7 +10,9 @@ in the Streamlit application (app.py).
 """
 
 import os
+import re
 import pickle
+import unicodedata
 from pypdf import PdfReader
 from sentence_transformers import SentenceTransformer
 import faiss
@@ -20,7 +22,7 @@ DOCS_PATH = "docs"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 EMBEDDER_NAME = "all-MiniLM-L6-v2"
-STORE_FILE = f"context/store.pkl"
+STORE_FILE = "context/store.pkl"
 
 # Initialization
 embedder = SentenceTransformer(EMBEDDER_NAME)
@@ -30,18 +32,35 @@ paths = []
 def extract_text_from_pdf(pdf_path):
     """
     Extracts all text from a given PDF file.
-
-    Args:
-        pdf_path (str): Path to the PDF file.
-
-    Returns:
-        str: Extracted text content from the PDF.
     """
     reader = PdfReader(pdf_path)
     text_aux = ""
     for page in reader.pages:
         text_aux += page.extract_text() or ""
     return text_aux
+
+def clean_text(text):
+    """
+    Cleans text by removing unreadable characters, excessive whitespace,
+    and non-textual symbols from OCR or HTML-to-PDF conversion
+    """
+    # Normalize Unicode
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("utf-8", "ignore")
+
+    # Remove control characters and weird symbols
+    text = re.sub(r"[^\x20-\x7E\n]", " ", text)
+
+    # Remove multiple newlines or spaces
+    text = re.sub(r"\s+", " ", text)
+
+    # Remove HTML fragments that might be embedded
+    text = re.sub(r"<[^>]+>", "", text)
+
+    # Keep only text that looks meaningful
+    if len(text.strip()) < 50: # avoid tiny fragments
+        return ""
+    
+    return text.strip()
 
 # Chunking
 def chunk_text(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP):
@@ -64,8 +83,9 @@ for root, _, files in os.walk(DOCS_PATH):
             path = os.path.join(root, file)
             try:
                 text = extract_text_from_pdf(path)
-                if text.strip():
-                    for chunk in chunk_text(text):
+                cleaned = clean_text(text)
+                if cleaned.strip():
+                    for chunk in chunk_text(cleaned):
                         documents.append(chunk)
                         paths.append(path)
             except FileNotFoundError:
