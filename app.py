@@ -38,7 +38,7 @@ if query:
     PROMPT = f"Answer based on the following documentation:\n\n{CONTEXT}\n\nQuestion: {query}"
 
     # Get the model's response from Ollama
-    response = ollama.chat(model="gemma:2b", messages=[{"role": "user", "content": PROMPT}])
+    response = ollama.chat(model="phi3", messages=[{"role": "user", "content": PROMPT}])
 
     # Display the model's answer
     st.markdown("### 📖 Answer:")

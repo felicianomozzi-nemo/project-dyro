@@ -24,6 +24,7 @@ disable=
     E1137, # unsupported-assignment-operation (atributos dinámicos de modelo)
     E1138, # unsupported-membership-test (ej: if x in model_instance)
     W0221, # arguments-differ (override de métodos como __init__ en modelos)
+    W0621 # redefined-outer-name (cuando en dos scopes distintos uso variables con el mismo nombre)
 
 # Confidence levels of issues to be reported
 confidence=HIGH,CONTROL_FLOW,INFERENCE,INFERENCE_FAILURE,UNDEFINED
