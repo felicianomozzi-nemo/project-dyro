@@ -20,7 +20,7 @@ DOCS_PATH = "docs"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 200
 EMBEDDER_NAME = "all-MiniLM-L6-v2"
-STORE_FILE = "store.pkl"
+STORE_FILE = f"{DOCS_PATH}/store.pkl"
 
 # Initialization
 embedder = SentenceTransformer(EMBEDDER_NAME)
